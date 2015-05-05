@@ -48,7 +48,11 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
+		if(args.length ==1){
 		Main main = new Main(new File(args[0]));
 		main.ausgeben();
+		}else{
+			System.out.println("Bitte ein Dateipfad beim Aufruf mit übergeben.");
+		}
 	}
 }

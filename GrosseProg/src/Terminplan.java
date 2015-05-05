@@ -58,28 +58,31 @@ public class Terminplan {
 			StringBuilder sb = new StringBuilder();
 			DecimalFormat df = new DecimalFormat("00");
 			int index = 0;
-			int hour = 8;
+			int stunde = 8;
 			int minute = 0;
-			int sum= 0;
-			int[] abschnittwechsel = new int[] {9, 11, 12};
-			int[] abschnittlaenge = new int[] {60, 180, 240};
+			int sum = 0;
+			int[] abschnittwechsel = new int[] { 9, 11, 12 };
+			int[] abschnittlaenge = new int[] { 60, 180, 240 };
 			for (int value : this.dauer) {
-				while (abschnittwechsel.length > index && strategie[index]==0) {
-					hour = abschnittwechsel[index];
-					minute = 0;
+				while (abschnittwechsel.length > index && strategie[index] == 0) {
+					if (stunde < abschnittwechsel[index]) {
+						stunde = abschnittwechsel[index];
+						minute = 0;
+					}
 					sb.append("geschlossen  ");
 					index++;
 				}
-				sb.append(df.format(hour) + "." + df.format(minute % 60) + "  ");
+				sb.append(df.format(stunde) + "." + df.format(minute % 60) + "  ");
 				minute += value;
 				sum += minute;
-				hour += Math.floor(minute / 60);
+				stunde += Math.floor(minute / 60);
 				minute %= 60;
-				if(abschnittwechsel.length > index && sum>= abschnittlaenge[index]){
+				if (abschnittwechsel.length > index
+						&& sum >= abschnittlaenge[index]) {
 					index++;
 				}
 			}
-			while(abschnittwechsel.length > index && strategie[index]==0){
+			while (abschnittwechsel.length > index && strategie[index] == 0) {
 				sb.append("geschlossen  ");
 				index++;
 			}
