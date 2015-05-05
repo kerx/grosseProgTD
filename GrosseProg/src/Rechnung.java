@@ -10,10 +10,12 @@ public class Rechnung {
 	}
 
 	/**
-	 * Methode um verarbeite zu verkleinern und den Code übersichtlicher zu
-	 * gestalten
+	 * Liest die übergebene ArrayList ein, speichert die Werte ab und
+	 * verarbeitet sie direkt
 	 * 
 	 * @param input
+	 *            Liste mit abwechselnd "Name der Strategie" und "Strategie"
+	 *            (z.B. 30 30 30) enthält
 	 */
 	public void einlesen(ArrayList<String> input)
 			throws StrategieFormatException, StrategieVerarbeitungsException {
@@ -65,6 +67,15 @@ public class Rechnung {
 		}
 	}
 
+	/**
+	 * Verarbeitet und speichert die übergebenen Daten
+	 * 
+	 * @param name
+	 *            Name der Strategie
+	 * @param strategie
+	 *            3-Dimensionales Array
+	 * @throws StrategieVerarbeitungsException
+	 */
 	private void verarbeite(String name, int[] strategie)
 			throws StrategieVerarbeitungsException {
 		int sum = 0;
@@ -109,13 +120,42 @@ public class Rechnung {
 		}
 		Terminplan tp = new Terminplan(terminListe, name, strategie);
 		terminplaene.add(tp);
+		berechneZeit(terminListe, tp);
+	}
+
+	/**
+	 * Beginnt den rekursiven Aufruf berechneZeit()<br>
+	 * Rekursive Methode: Berechnet zu der Liste der geplanten Termindauern alle
+	 * möglichen Variationen mit wirklichen Termindauern (15, 20, 30) und
+	 * berechnet wichtige Durchschnittwerte zur Berwertung der Strategie
+	 * @param terminListe 
+	 * @param tp
+	 */
+	private void berechneZeit(ArrayList<Integer> terminListe, Terminplan tp) {
 		berechneZeit(0, 0, 0, 0, 0, terminListe, tp);
 		tp.finish();
 	}
 
+	/**
+	 * <b>BITTE NICHT VERWENDEN<b> <br>
+	 * Wird durch berechneZeit(ArrayList<Integer>, Terminplan) gestartet <br>
+	 * Rekursive Methode: Berechnet zu der Liste der geplanten Termindauern alle
+	 * möglichen Variationen mit wirklichen Termindauern (15, 20, 30) und
+	 * berechnet wichtige Durchschnittwerte zur Berwertung der Strategie
+	 * 
+	 * @param count
+	 *            Anzahl der rekusiven Durchläufe bis zum 1. Ergebnis
+	 *            (entspricht Baumhöhe)
+	 * @param wz
+	 * @param mwz
+	 * @param lz
+	 * @param verzug
+	 * @param terminList
+	 * @param termin
+	 */
 	private void berechneZeit(int count, int wz, int mwz, int lz, int verzug,
-			ArrayList<Integer> terminlaenge, Terminplan termin) {
-		if (terminlaenge.isEmpty()) {
+			ArrayList<Integer> terminListe, Terminplan termin) {
+		if (terminListe.isEmpty()) {
 			// keine Elemente mehr vorhanden
 			termin.addWz(wz < 0 ? 0. : ((double) wz / (double) count));
 			termin.addMwz((double) mwz);
@@ -124,7 +164,8 @@ public class Rechnung {
 			// noch Elemente zum verabeiten
 			int[] termindauern = new int[] { 15, 20, 30 };
 			for (int dauer : termindauern) {
-				int terminlaenge_save = terminlaenge.get(0);
+				ArrayList<Integer> terminListe_clone = (ArrayList<Integer>) terminListe.clone();
+				int terminlaenge_save = terminListe_clone.get(0);
 				int diff = dauer - terminlaenge_save;
 				int wz_new = wz + verzug;
 				int mwz_new = mwz > verzug ? mwz : verzug;
@@ -134,11 +175,11 @@ public class Rechnung {
 					lz_new += (verzug + diff);
 				}
 				// behandeltes Element entfernen
-				terminlaenge.remove(0);
+				terminListe_clone.remove(0);
 				// nächster Aufruf
 				berechneZeit(count + 1, wz_new, mwz_new, lz_new, verzug_new,
-						(ArrayList<Integer>) terminlaenge.clone(), termin);
-				terminlaenge.add(0, terminlaenge_save);
+						(ArrayList<Integer>) terminListe_clone, termin);
+				//terminListe_clone.add(0, terminlaenge_save);
 			}
 		}
 	}
