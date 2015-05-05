@@ -1,11 +1,8 @@
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Formatter;
-import java.util.Iterator;
-import java.util.Locale;
 
 public class Terminplan {
+	private final String NEWLINE = System.getProperty("line.separator");
 	private ArrayList<Integer> dauer;
 	private String name;
 	private double wz;
@@ -34,7 +31,7 @@ public class Terminplan {
 	}
 
 	public void finish() {
-		double variationen = Math.pow(3, dauer.size());
+		double variationen = getMoeglichkeiten();
 		wz = wz / variationen;
 		mwz = mwz / variationen;
 		lz = lz / variationen;
@@ -42,9 +39,17 @@ public class Terminplan {
 
 	}
 
-	public String toString() {
-		return dauerZuZeitpunkt() + " wz: " + wz + "; mwz: " + mwz + "; lz: "
-				+ lz + " bs: " + bs;
+	public String getDauerString() {
+		return dauerZuZeitpunkt();
+	}
+	
+	public String getStrategieString(){
+		StringBuilder sb = new StringBuilder();
+		sb.append(name+NEWLINE);
+		for(int strat : this.strategie){
+			sb.append(strat+"\t");
+		}
+		return sb.toString();
 	}
 
 	private String dauerZuZeitpunkt() {
@@ -52,7 +57,7 @@ public class Terminplan {
 			return "";
 		} else {
 			StringBuilder sb = new StringBuilder();
-			DecimalFormat deciFormat = new DecimalFormat("00");
+			DecimalFormat df = new DecimalFormat("00");
 			int index = 0;
 			int hour = 8;
 			int minute = 0;
@@ -66,7 +71,7 @@ public class Terminplan {
 				if (this.strategie[index] != value) {
 					index++;
 				} 
-				sb.append(deciFormat.format(hour) + "." + deciFormat.format(minute % 60) + "  ");
+				sb.append(df.format(hour) + "." + df.format(minute % 60) + "  ");
 				minute += value;
 				hour += Math.floor(minute / 60);
 				minute %= 60;
@@ -79,4 +84,26 @@ public class Terminplan {
 		this.bs = this.wz + (0.1 * this.mwz) + 5 * lz;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public double getWz() {
+		return wz;
+	}
+
+	public double getMwz() {
+		return mwz;
+	}
+
+	public double getLz() {
+		return lz;
+	}
+
+	public double getBs() {
+		return bs;
+	}
+	public int getMoeglichkeiten(){
+		return (int) Math.pow(3, dauer.size());
+	}
 }
