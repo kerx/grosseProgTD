@@ -11,8 +11,7 @@ public class Terminplan {
 	private double bs;
 	private int[] strategie;
 
-	public Terminplan(ArrayList<Integer> dauer, String name,
-			int[] strategie) {
+	public Terminplan(ArrayList<Integer> dauer, String name, int[] strategie) {
 		this.dauer = (ArrayList<Integer>) dauer.clone();
 		this.name = name;
 		this.strategie = strategie.clone();
@@ -42,12 +41,12 @@ public class Terminplan {
 	public String getDauerString() {
 		return dauerZuZeitpunkt();
 	}
-	
-	public String getStrategieString(){
+
+	public String getStrategieString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(name+NEWLINE);
-		for(int strat : this.strategie){
-			sb.append(strat+"\t");
+		sb.append(name + NEWLINE);
+		for (int strat : this.strategie) {
+			sb.append(strat + "\t");
 		}
 		return sb.toString();
 	}
@@ -61,20 +60,28 @@ public class Terminplan {
 			int index = 0;
 			int hour = 8;
 			int minute = 0;
-			int[] abschnittwechsel = new int[] { 9, 11 };
+			int sum= 0;
+			int[] abschnittwechsel = new int[] {9, 11, 12};
+			int[] abschnittlaenge = new int[] {60, 180, 240};
 			for (int value : this.dauer) {
-				while (this.strategie[index] == 0) {
+				while (abschnittwechsel.length > index && strategie[index]==0) {
 					hour = abschnittwechsel[index];
+					minute = 0;
 					sb.append("geschlossen  ");
 					index++;
 				}
-				if (this.strategie[index] != value) {
-					index++;
-				} 
 				sb.append(df.format(hour) + "." + df.format(minute % 60) + "  ");
 				minute += value;
+				sum += minute;
 				hour += Math.floor(minute / 60);
 				minute %= 60;
+				if(abschnittwechsel.length > index && sum>= abschnittlaenge[index]){
+					index++;
+				}
+			}
+			while(abschnittwechsel.length > index && strategie[index]==0){
+				sb.append("geschlossen  ");
+				index++;
 			}
 			return sb.toString();
 		}
@@ -103,7 +110,8 @@ public class Terminplan {
 	public double getBs() {
 		return bs;
 	}
-	public int getMoeglichkeiten(){
+
+	public int getMoeglichkeiten() {
 		return (int) Math.pow(3, dauer.size());
 	}
 }

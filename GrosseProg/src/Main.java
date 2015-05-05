@@ -37,11 +37,9 @@ public class Main {
 			System.out
 					.println("Die Datei wurde in diesem Pfad nicht gefunden.");
 			System.exit(0);
-		} catch (StrategieFormatException e) {
+		} catch (StrategieFormatException|StrategieVerarbeitungsException e) {
 			System.out.println(e.getMessage());
 			System.exit(0);
-		} catch (StrategieVerarbeitungsException e) {
-			System.out.println(e.getMessage());
 		} finally {
 			if (sc != null) {
 				sc.close();

@@ -38,9 +38,8 @@ public class Rechnung {
 							split_int[i] = Integer.parseInt(split[i]);
 						} catch (NumberFormatException e) {
 							throw new StrategieFormatException(
-									"Strategiebeschreibung in Zeile "
-											+ rowCount
-											+ " fehlerhaft. Es dürfen nur Ganzzahlen verwendet werden.");
+									"Strategiebeschreibung fehlerhaft. Es dürfen nur Ganzzahlen verwendet werden (Zeile "
+											+ rowCount + ").");
 						}
 					}
 					// Strategie verarbeiten
@@ -50,15 +49,14 @@ public class Rechnung {
 					// Eingabe hat falsches Format: hier sollten 3 Zahlen in der
 					// Reihe stehen
 					throw new StrategieFormatException(
-							"Strategiebeschreibung in Zeile "
-									+ rowCount
-									+ " fehlerhaft. Es können nur drei Tagesabschnitte definiert werden.");
+							"Strategiebeschreibung fehlerhaft. Es können nur drei Tagesabschnitte definiert werden (Zeile "
+									+ rowCount + ").");
 				}
 			} else {
 				// Entweder 2 Zahlen oder Kommentarzeilen hintereinander
 				throw new StrategieFormatException(
-						"Mehrere Kommentar- oder Strategiezeilen " + rowCount
-								+ " am Stück.");
+						"Doppelte Kommentar- oder Strategiezeilen am Stück(Zeile "
+								+ rowCount + ").");
 			}
 		}
 		if (terminplaene.isEmpty()) {
@@ -70,13 +68,16 @@ public class Rechnung {
 	private void verarbeite(String name, int[] strategie)
 			throws StrategieVerarbeitungsException {
 		int sum = 0;
+		int nullCounter = 0;
 		ArrayList<Integer> terminListe = new ArrayList<Integer>();
 		int[] abschnittslaengen = new int[] { 60, 180, 240 };
 		for (int i = 0; i < 3; i++) {
 			if (strategie[i] <= 0) {
 				// freie Abschnitt für den Arzt
 				sum = abschnittslaengen[i];
-			} else {
+				nullCounter++;
+			} else if (strategie[i] <= abschnittslaengen[abschnittslaengen.length
+					- (i + 1)]) {
 				// richtiger Arbeitsabschnitt
 				while (sum < abschnittslaengen[i]) {
 					// solange wir uns noch in dem i-ten Abschnitt befinden
@@ -87,6 +88,10 @@ public class Rechnung {
 						terminListe.add(strategie[i]);
 					}
 				}
+			} else {
+				throw new StrategieVerarbeitungsException(
+						"Reguläre Arbeitszeit wurde überschritten (Strategiename \""
+								+ name + "\").");
 			}
 		}
 		if (terminListe.size() > 16) {
@@ -94,7 +99,13 @@ public class Rechnung {
 			throw new StrategieVerarbeitungsException(
 					"Die Berechnung für "
 							+ terminListe.size()
-							+ " Termine würde zu lange dauern. Die Strategie wurde aus der Berechnung entfernt.");
+							+ " Termine der Strategie würde zu lange dauern (Strategiename \""
+							+ name + "\").");
+		}
+		if (nullCounter >= 3) {
+			throw new StrategieVerarbeitungsException(
+					"Eine durchgehend geschlossene Praxis kann nicht verarbeitet werden (Strategiename \""
+							+ name + "\").");
 		}
 		Terminplan tp = new Terminplan(terminListe, name, strategie);
 		terminplaene.add(tp);
@@ -102,17 +113,6 @@ public class Rechnung {
 		tp.finish();
 	}
 
-	/**
-	 * 
-	 * @param count
-	 * @param wz
-	 * @param mwz
-	 * @param mwz_sum
-	 * @param lz
-	 * @param terminlaenge
-	 * @param termin
-	 * @return
-	 */
 	private void berechneZeit(int count, int wz, int mwz, int lz, int verzug,
 			ArrayList<Integer> terminlaenge, Terminplan termin) {
 		if (terminlaenge.isEmpty()) {
@@ -157,7 +157,7 @@ public class Rechnung {
 				+ bestName
 				+ "\" ist mit einer Bewertung von "
 				+ df.format(bestBs)
-				+ " die beste der eingelesenen Stragtegien und sollte deshalb bei der Terminvergabe gewählt werden.";
+				+ " die beste der eingelesenen Strategien und sollte deshalb bei der Terminvergabe gewählt werden.";
 	}
 
 	public String getStrategienString() {
