@@ -1,5 +1,6 @@
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Timer;
 
 
 public class Main {
@@ -18,9 +19,12 @@ public class Main {
 	
 	private void einlesen(){
 		ArrayList<String> t1 = new ArrayList<String>();
+		long vorher = System.currentTimeMillis();
 		t1.add("% Test1");
-		t1.add("15 30 20");
+		t1.add("15 15 15");
 		rechnung.einlesen(t1);
+		long nachher = System.currentTimeMillis();
+		System.out.println("Zeit benötigt:"+(nachher - vorher)/1000.);
 	}
 	
 	public static void main(String[] args) {
