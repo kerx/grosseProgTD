@@ -1,10 +1,22 @@
-% 30 0 30
+% Beispielfall
 15 30 20
-% 0 0 30
-0 0 30
-% 30 0 0
-40 0 0
-% 0 40 0
-0 40 0
-% 60 0 30
-200 0 30
+% keine Wartzeit
+30 30 30
+% keine Leerlaufzeit
+15 15 15
+% Letzter Termin endet vor 12 Uhr
+19 21 22
+% bester Fall
+15 21 19
+% Praxis am Anfang geschlossen
+0 18 30
+% Praxis in der mitte geschlossen
+21 0 30
+% Praxis in der mitte geschlossen (vorher nachher gleich)
+30 0 30
+% Praxis am Ende geschlossen
+22 0 0
+% Praxis nur zwischendurch geöffnet
+0 30 0
+% negative Werte zählen auch als geschlossen
+-1 30 0

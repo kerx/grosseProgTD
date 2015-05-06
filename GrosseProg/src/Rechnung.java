@@ -111,6 +111,7 @@ public class Rechnung {
 		}
 		Terminplan tp = new Terminplan(terminListe, name, strategie);
 		terminplaene.add(tp);
+		// starte Rekursiven Aufrug
 		berechneZeit(terminListe, tp);
 	}
 
@@ -119,12 +120,16 @@ public class Rechnung {
 	 * Rekursive Methode: Berechnet zu der Liste der geplanten Termindauern alle
 	 * möglichen Variationen mit wirklichen Termindauern (15, 20, 30) und
 	 * berechnet wichtige Durchschnittwerte zur Berwertung der Strategie
-	 * @param terminListe 
+	 * 
+	 * @param terminListe
+	 *            Liste der geplanten Termine
 	 * @param tp
+	 *            entsprechendes Terminplan-Objekt
 	 */
 	private void berechneZeit(ArrayList<Integer> terminListe, Terminplan tp) {
-		berechneZeit(0, 0, 0, 0, 0, terminListe, tp);
-		tp.finish();
+		Kombinationsspeicher ks = new Kombinationsspeicher();
+		berechneZeit(0, 0, 0, 0, 0, terminListe, ks);
+		tp.setWerte(ks.getWz(), ks.getMwz(), ks.getLz());
 	}
 
 	/**
@@ -138,26 +143,35 @@ public class Rechnung {
 	 *            Anzahl der rekusiven Durchläufe bis zum 1. Ergebnis
 	 *            (entspricht Baumhöhe)
 	 * @param wz
+	 *            aufaddierte Wartezeit
 	 * @param mwz
+	 *            maximale Wartezeit
 	 * @param lz
+	 *            aufaddierte Leerlaufzeit
 	 * @param verzug
+	 *            Zeit, die der Arzt mit seinen Terminen im Verzug ist
 	 * @param terminList
-	 * @param termin
+	 *            Liste der noch kommenden Termine
+	 * @param ks
+	 *            Zwischenspeicher der Werte der Kombinationen
 	 */
 	private void berechneZeit(int count, int wz, int mwz, int lz, int verzug,
-			ArrayList<Integer> terminListe, Terminplan termin) {
+			ArrayList<Integer> terminListe, Kombinationsspeicher ks) {
 		if (terminListe.isEmpty()) {
 			// keine Elemente mehr vorhanden
-			termin.addWz(wz < 0 ? 0. : ((double) wz / (double) count));
-			termin.addMwz((double) mwz);
-			termin.addLz(Math.abs(lz));
+			// In Kombinationsobjekt eintragen
+			ks.addWz(wz < 0 ? 0. : ((double) wz / (double) count));
+			ks.addMwz(mwz);
+			ks.addLz(Math.abs(lz));
 		} else {
 			// noch Elemente zum verabeiten
 			int[] termindauern = new int[] { 15, 20, 30 };
 			for (int dauer : termindauern) {
 				// jede Termindauer an dieser Stelle einmal einsetzen
-				// damit für die folgenden Schleifendurchläufe wieder die gesamte Liste zur Verfügung steht
-				ArrayList<Integer> terminListe_clone = (ArrayList<Integer>) terminListe.clone();
+				// damit für die folgenden Schleifendurchläufe wieder die
+				// gesamte Liste zur Verfügung steht
+				ArrayList<Integer> terminListe_clone = (ArrayList<Integer>) terminListe
+						.clone();
 				int diff = dauer - terminListe_clone.get(0);
 				int wz_new = wz + verzug;
 				int mwz_new = mwz > verzug ? mwz : verzug;
@@ -170,13 +184,14 @@ public class Rechnung {
 				terminListe_clone.remove(0);
 				// nächster Aufruf (eine Ebene tiefer in den Baum gehen)
 				berechneZeit(count + 1, wz_new, mwz_new, lz_new, verzug_new,
-						(ArrayList<Integer>) terminListe_clone, termin);
+						(ArrayList<Integer>) terminListe_clone, ks);
 			}
 		}
 	}
-	
+
 	/**
 	 * Sucht aus den eingelesen Strategien die beste raus
+	 * 
 	 * @return beste Strategie
 	 */
 	public String findeBesten() {
@@ -195,9 +210,10 @@ public class Rechnung {
 				+ df.format(bestBs)
 				+ " die beste der eingelesenen Strategien und sollte deshalb bei der Terminvergabe gewählt werden.";
 	}
-	
+
 	/**
 	 * Gibt alle Strategien in Listenform zurück
+	 * 
 	 * @return Zeilenweise alle Strategien
 	 */
 	public String getStrategienString() {
@@ -210,6 +226,7 @@ public class Rechnung {
 
 	/**
 	 * Gibt alle errechneten Werte und den Terminplan der Strategien zurück
+	 * 
 	 * @return alle Durchschnittswerte und Terminplan
 	 */
 	public String getTerminplaeneString() {
