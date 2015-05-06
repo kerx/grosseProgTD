@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class Main {
 	private Rechnung rechnung;
 	private ArrayList<String> eingabeListe;
-	private final static boolean TEST = true;
+	private final static boolean TEST = false;
 
 	/**
 	 * Erzeugt ein Main-Objekt, dass für die Ein- und Ausgabe zuständig ist. Die
@@ -102,7 +102,7 @@ public class Main {
 				main.ausgeben();
 			} else {
 				System.out
-						.println("Bitte ein Dateipfad beim Aufruf mit übergeben.");
+						.println("Bitte einen existierenden Dateipfad beim Aufruf mit übergeben.");
 			}
 		}
 	}

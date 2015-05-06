@@ -30,7 +30,7 @@ public class Rechnung {
 				name = str;
 			} else if (!name.equals("")) {
 				// Name gesetzt: Also kommen jetzt drei Zahlen
-				String[] split = str.split(" ");
+				String[] split = str.split(" +");
 				if (split.length == 3) {
 					// schonmal richtige Länge
 					int[] split_int = new int[3];
