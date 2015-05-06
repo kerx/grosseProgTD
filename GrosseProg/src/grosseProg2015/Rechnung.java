@@ -1,3 +1,4 @@
+package grosseProg2015;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -57,9 +58,14 @@ public class Rechnung {
 			} else {
 				// Entweder 2 Zahlen oder Kommentarzeilen hintereinander
 				throw new StrategieFormatException(
-						"Doppelte Kommentar- oder Strategiezeilen am Stück(Zeile "
+						"Doppelte Kommentar- oder Strategiezeilen am Stück (Zeile "
 								+ rowCount + ").");
 			}
+		}
+		if (!name.isEmpty()) {
+			throw new StrategieFormatException(
+					"Kommentarzeilen am Ende sind verboten (Zeile " + rowCount
+							+ ")");
 		}
 		if (terminplaene.isEmpty()) {
 			throw new StrategieFormatException(

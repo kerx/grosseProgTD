@@ -1,3 +1,4 @@
+package grosseProg2015;
 
 public class StrategieFormatException extends Exception {
 	

@@ -1,3 +1,4 @@
+package grosseProg2015;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -107,8 +108,8 @@ public class Main {
 		}
 	}
 	/**
-	 * Generiert
-	 * @return
+	 * Generiert Testeingaben
+	 * @return Liste von Testeingaben
 	 */
 	private static ArrayList<String> creatTestList() {
 		ArrayList<String> list = new ArrayList<String>();

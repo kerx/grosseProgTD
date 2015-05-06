@@ -1,3 +1,4 @@
+package grosseProg2015;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -77,7 +78,7 @@ public class Terminplan {
 			int[] abschnittlaenge = new int[] { 60, 180, 240 };
 			for (int value : this.dauer) {
 				// geht alle Termindauern durch
-				while (abschnittwechsel.length > index && strategie[index] == 0) {
+				while (abschnittwechsel.length > index && strategie[index] <= 0) {
 					// falls die Praxis zwischendurch/am Anfang geschlossen hat, muss dies angezeigt werden 
 					if (stunde < abschnittwechsel[index]) {
 						// wenn der letzte Termin nicht die geschlossene Zeit überdauert

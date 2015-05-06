@@ -1,3 +1,4 @@
+package grosseProg2015;
 /**
  * Zwischenspeicher für die Rekusionswerte
  * 
@@ -42,7 +43,7 @@ public class Kombinationsspeicher {
 	 * Addiert die übergebene maximale Wartezeit auf die bisherige maximale
 	 * Wartezeit auf
 	 * 
-	 * @param wz
+	 * @param mwz
 	 *            maximale Wartezeit
 	 */
 	public void addMwz(double mwz) {
@@ -61,7 +62,7 @@ public class Kombinationsspeicher {
 	/**
 	 * Addiert die übergebene Leerlaufzeit auf die bisherige Leerlaufzeit auf
 	 * 
-	 * @param wz
+	 * @param lz
 	 *            maximale Leerlaufzeit
 	 */
 	public void addLz(double lz) {
