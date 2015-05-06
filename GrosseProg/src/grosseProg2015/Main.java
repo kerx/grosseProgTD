@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class Main {
 	private Rechnung rechnung;
 	private ArrayList<String> eingabeListe;
-	private final static boolean TEST = false;
+	private final static boolean TEST = true;
 
 	/**
 	 * Erzeugt ein Main-Objekt, dass für die Ein- und Ausgabe zuständig ist. Die
@@ -124,9 +124,9 @@ public class Main {
 			werte[i] = i + 15;
 		}
 		// ales durchlaufen
-		for (int i = 0; i <= werte.length; i++) {
-			for (int j = 0; j <= werte.length; j++) {
-				for (int k = 15; k <= werte.length; k++) {
+		for (int i = 0; i < werte.length; i++) {
+			for (int j = 0; j < werte.length; j++) {
+				for (int k = 0; k < werte.length; k++) {
 					if (werte[i] == 0 && werte[j] == 0 && werte[k] == 0) {
 						// Fehlerfall überspringen
 						continue;
