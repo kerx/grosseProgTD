@@ -1,4 +1,5 @@
 package grosseProg2015;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -96,7 +97,8 @@ public class Main {
 			Main main = new Main(list);
 			main.ausgeben();
 			long nachher = System.currentTimeMillis();
-			System.out.println("Zeit benötigt: " + (double)(nachher - vorher) / 1000.+" Sekunden");
+			System.out.println("Zeit benötigt: " + (double) (nachher - vorher)
+					/ 1000. + " Sekunden");
 		} else {
 			if (args.length == 1) {
 				Main main = new Main(new File(args[0]));
@@ -107,17 +109,30 @@ public class Main {
 			}
 		}
 	}
+
 	/**
 	 * Generiert Testeingaben
+	 * 
 	 * @return Liste von Testeingaben
 	 */
 	private static ArrayList<String> creatTestList() {
 		ArrayList<String> list = new ArrayList<String>();
-		for (int dauer1 = 15; dauer1 <= 30; dauer1++) {
-			for (int dauer2 = 15; dauer2 <= 30; dauer2++) {
-				for (int dauer3 = 15; dauer3 <= 30; dauer3++) {
-					list.add("% " + dauer1 + " " + dauer2 + " " + dauer3);
-					list.add(dauer1 + " " + dauer2 + " " + dauer3);
+		// Testwerte definieren
+		int[] werte = new int[17];
+		werte[16] = 0;
+		for (int i = 0; i < 16; i++) {
+			werte[i] = i + 15;
+		}
+		// ales durchlaufen
+		for (int i = 0; i <= werte.length; i++) {
+			for (int j = 0; j <= werte.length; j++) {
+				for (int k = 15; k <= werte.length; k++) {
+					if (werte[i] == 0 && werte[j] == 0 && werte[k] == 0) {
+						// Fehlerfall überspringen
+						continue;
+					}
+					list.add("% " + werte[i] + " " + werte[j] + " " + werte[k]);
+					list.add(werte[i] + " " + werte[j] + " " + werte[k]);
 				}
 			}
 		}

@@ -25,7 +25,11 @@ public class Rechnung {
 		int rowCount = 0;
 		for (String str : input) {
 			rowCount++;
-			// über alle Zeilen
+			// über alle Zeilen der Datei
+			if(str.isEmpty()){
+				// Leerzeilen werden übersprungen
+				continue;
+			}
 			if (name.equals("") && str.startsWith("%")) {
 				// Kommentarzeile (Name der Strategie)
 				name = str;
