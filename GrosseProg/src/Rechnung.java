@@ -87,8 +87,7 @@ public class Rechnung {
 				// freie Abschnitt für den Arzt
 				sum = abschnittslaengen[i];
 				nullCounter++;
-			} else if (strategie[i] <= abschnittslaengen[abschnittslaengen.length
-					- (i + 1)]) {
+			} else if (strategie[i] >= 15 && strategie[i] <= 60) {
 				// richtiger Arbeitsabschnitt
 				while (sum < abschnittslaengen[i]) {
 					// solange wir uns noch in dem i-ten Abschnitt befinden
@@ -101,17 +100,9 @@ public class Rechnung {
 				}
 			} else {
 				throw new StrategieVerarbeitungsException(
-						"Reguläre Arbeitszeit wurde überschritten (Strategiename \""
+						"Nur Eingaben zwischen 15-30 sind erlaubt (Strategiename \""
 								+ name + "\").");
 			}
-		}
-		if (terminListe.size() > 16) {
-			// würde zulange dauern
-			throw new StrategieVerarbeitungsException(
-					"Die Berechnung für "
-							+ terminListe.size()
-							+ " Termine der Strategie würde zu lange dauern (Strategiename \""
-							+ name + "\").");
 		}
 		if (nullCounter >= 3) {
 			throw new StrategieVerarbeitungsException(
@@ -164,9 +155,10 @@ public class Rechnung {
 			// noch Elemente zum verabeiten
 			int[] termindauern = new int[] { 15, 20, 30 };
 			for (int dauer : termindauern) {
+				// jede Termindauer an dieser Stelle einmal einsetzen
+				// damit für die folgenden Schleifendurchläufe wieder die gesamte Liste zur Verfügung steht
 				ArrayList<Integer> terminListe_clone = (ArrayList<Integer>) terminListe.clone();
-				int terminlaenge_save = terminListe_clone.get(0);
-				int diff = dauer - terminlaenge_save;
+				int diff = dauer - terminListe_clone.get(0);
 				int wz_new = wz + verzug;
 				int mwz_new = mwz > verzug ? mwz : verzug;
 				int verzug_new = (verzug + diff) > 0 ? verzug + diff : 0;
@@ -174,16 +166,19 @@ public class Rechnung {
 				if (verzug_new == 0 && diff < 0) {
 					lz_new += (verzug + diff);
 				}
-				// behandeltes Element entfernen
+				// behandeltes Element aus dem Klon entfernen
 				terminListe_clone.remove(0);
-				// nächster Aufruf
+				// nächster Aufruf (eine Ebene tiefer in den Baum gehen)
 				berechneZeit(count + 1, wz_new, mwz_new, lz_new, verzug_new,
 						(ArrayList<Integer>) terminListe_clone, termin);
-				//terminListe_clone.add(0, terminlaenge_save);
 			}
 		}
 	}
-
+	
+	/**
+	 * Sucht aus den eingelesen Strategien die beste raus
+	 * @return beste Strategie
+	 */
 	public String findeBesten() {
 		String bestName = "";
 		DecimalFormat df = new DecimalFormat("#0.0000");
@@ -200,7 +195,11 @@ public class Rechnung {
 				+ df.format(bestBs)
 				+ " die beste der eingelesenen Strategien und sollte deshalb bei der Terminvergabe gewählt werden.";
 	}
-
+	
+	/**
+	 * Gibt alle Strategien in Listenform zurück
+	 * @return Zeilenweise alle Strategien
+	 */
 	public String getStrategienString() {
 		StringBuilder sb = new StringBuilder("Liste der Strategien\r");
 		for (Terminplan t : terminplaene) {
@@ -209,6 +208,10 @@ public class Rechnung {
 		return sb.toString();
 	}
 
+	/**
+	 * Gibt alle errechneten Werte und den Terminplan der Strategien zurück
+	 * @return alle Durchschnittswerte und Terminplan
+	 */
 	public String getTerminplaeneString() {
 		StringBuilder sb = new StringBuilder();
 		for (Terminplan t : terminplaene) {
