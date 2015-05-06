@@ -118,11 +118,8 @@ public class Main {
 	private static ArrayList<String> creatTestList() {
 		ArrayList<String> list = new ArrayList<String>();
 		// Testwerte definieren
-		int[] werte = new int[17];
-		werte[16] = 0;
-		for (int i = 0; i < 16; i++) {
-			werte[i] = i + 15;
-		}
+		//int[] werte = new int[]{15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30};
+		int[] werte = new int[]{0,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30};
 		// ales durchlaufen
 		for (int i = 0; i < werte.length; i++) {
 			for (int j = 0; j < werte.length; j++) {
