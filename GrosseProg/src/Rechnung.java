@@ -87,7 +87,7 @@ public class Rechnung {
 				// freie Abschnitt für den Arzt
 				sum = abschnittslaengen[i];
 				nullCounter++;
-			} else if (strategie[i] >= 15 && strategie[i] <= 60) {
+			} else if (strategie[i] >= 15 && strategie[i] <= 30) {
 				// richtiger Arbeitsabschnitt
 				while (sum < abschnittslaengen[i]) {
 					// solange wir uns noch in dem i-ten Abschnitt befinden
