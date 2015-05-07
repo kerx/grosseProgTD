@@ -1,11 +1,20 @@
 package grosseProg2015;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+/**
+ * Verarbeitet die Strategiedaten und berechnet die gewünschten Werte
+ * @author td
+ *
+ */
 public class Rechnung {
 	private ArrayList<Terminplan> terminplaene;
 	private final String NEWLINE = System.getProperty("line.separator");
-
+	
+	/**
+	 * Erzeugt ein Rechnungsobjekt
+	 */
 	public Rechnung() {
 		this.terminplaene = new ArrayList<Terminplan>();
 	}
@@ -24,18 +33,19 @@ public class Rechnung {
 		// für Fehlerausgaben
 		int rowCount = 0;
 		for (String str : input) {
+			String str_trim = str.trim();
 			rowCount++;
 			// über alle Zeilen der Datei
-			if(str.isEmpty()){
+			if (str.isEmpty()) {
 				// Leerzeilen werden übersprungen
 				continue;
 			}
-			if (name.equals("") && str.startsWith("%")) {
+			if (name.equals("") && str_trim.startsWith("%")) {
 				// Kommentarzeile (Name der Strategie)
-				name = str;
+				name = str_trim;
 			} else if (!name.equals("")) {
 				// Name gesetzt: Also kommen jetzt drei Zahlen
-				String[] split = str.split(" +");
+				String[] split = str_trim.split("\\s+");
 				if (split.length == 3) {
 					// schonmal richtige Länge
 					int[] split_int = new int[3];
@@ -102,7 +112,7 @@ public class Rechnung {
 				while (sum < abschnittslaengen[i]) {
 					// solange wir uns noch in dem i-ten Abschnitt befinden
 					sum += strategie[i];
-					if (sum <= 240) {
+					if (sum <= abschnittslaengen[abschnittslaengen.length - 1]) {
 						// Nur wenn der Endtermin (Praxis geschlossen) nicht
 						// überschritten wird
 						terminListe.add(strategie[i]);
@@ -255,7 +265,7 @@ public class Rechnung {
 					+ df.format(t.getWz()) + NEWLINE);
 			sb.append("durchschnittliche maximale Wartezeit \t MWZ \t= "
 					+ df.format(t.getMwz()) + NEWLINE);
-			sb.append("durchschnittliche LeerLaufzeit \t\t LZ \t= "
+			sb.append("durchschnittliche Leerlaufzeit \t\t LZ \t= "
 					+ df.format(t.getLz()) + NEWLINE);
 			sb.append("Gesamtbewertung der Strategie \t\t BS \t= "
 					+ df.format(t.getBs()) + NEWLINE);

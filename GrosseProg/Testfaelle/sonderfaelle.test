@@ -1,15 +1,20 @@
-% Beispielfall
-15 30 20
-% keine Wartzeit
-30 30 30
-% keine Leerlaufzeit
-15 15 15
 % Letzter Termin endet vor 12 Uhr
 19 21 22
-% bester Fall
-15 21 19
+% bester Fall (Praxis kann geschlossen sein)
+0 0 16
 % mehrere Leerzeichen in Strategie
 15  30 20
+
+% vorher und nachher Leerzeilen
+15 18 26
+
+
+
+
+   % am Anfang und Ende Leerzeichen/Tabs  
+     23 24 27
+% Tabs verwendet
+	23	26 17
 % Praxis am Anfang geschlossen
 0 18 30
 % Praxis in der mitte geschlossen

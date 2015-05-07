@@ -1,4 +1,5 @@
 package grosseProg2015;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -14,9 +15,13 @@ public class Terminplan {
 
 	/**
 	 * Erzeugt ein Terminplan-Objekt
-	 * @param dauer Liste der geplanten Dauern der Termine
-	 * @param name Name der Strategie
-	 * @param strategie Array der Strategie zur späteren Ausgabe
+	 * 
+	 * @param dauer
+	 *            Liste der geplanten Dauern der Termine
+	 * @param name
+	 *            Name der Strategie
+	 * @param strategie
+	 *            Array der Strategie zur späteren Ausgabe
 	 */
 	public Terminplan(ArrayList<Integer> dauer, String name, int[] strategie) {
 		this.dauer = (ArrayList<Integer>) dauer.clone();
@@ -25,22 +30,28 @@ public class Terminplan {
 	}
 
 	/**
-	 * Setzt alle Durchschnittswerte. Es müssen absolute Werte übergeben werden (also die Summe aller Werte der Kombinationen)
-	 * @param wz absolute durchschnittliche Wartezeit
-	 * @param mwz absolute maximale Wartezeit
-	 * @param lz absoulte Leerlaufzeit des Arztes
+	 * Setzt alle Durchschnittswerte. Es müssen absolute Werte übergeben werden
+	 * (also die Summe aller Werte der Kombinationen)
+	 * 
+	 * @param wz
+	 *            absolute durchschnittliche Wartezeit
+	 * @param mwz
+	 *            absolute maximale Wartezeit
+	 * @param lz
+	 *            absoulte Leerlaufzeit des Arztes
 	 */
 	public void setWerte(double wz, int mwz, int lz) {
 		double variationen = getMoeglichkeiten();
 		this.wz = wz / variationen;
-		this.mwz = (double)mwz / variationen;
-		this.lz = (double)lz / variationen;
+		this.mwz = (double) mwz / variationen;
+		this.lz = (double) lz / variationen;
 		setBs();
 
 	}
 
 	/**
 	 * Gibt einen Terminplan zu der Strategie zurück
+	 * 
 	 * @return String des Terminplans
 	 */
 	public String getDauerString() {
@@ -49,6 +60,7 @@ public class Terminplan {
 
 	/**
 	 * Gibt Name und Strategie zurück
+	 * 
 	 * @return String mit Name und Strategie
 	 */
 	public String getStrategieString() {
@@ -62,6 +74,7 @@ public class Terminplan {
 
 	/**
 	 * Wandelt die Dauern-Liste in einen lesbaren Terminplan um
+	 * 
 	 * @return Terminplan
 	 */
 	private String dauerZuZeitpunkt() {
@@ -79,19 +92,23 @@ public class Terminplan {
 			for (int value : this.dauer) {
 				// geht alle Termindauern durch
 				while (abschnittwechsel.length > index && strategie[index] <= 0) {
-					// falls die Praxis zwischendurch/am Anfang geschlossen hat, muss dies angezeigt werden 
+					// falls die Praxis zwischendurch/am Anfang geschlossen hat,
+					// muss dies angezeigt werden
 					if (stunde < abschnittwechsel[index]) {
-						// wenn der letzte Termin nicht die geschlossene Zeit überdauert
+						// wenn der letzte Termin nicht die geschlossene Zeit
+						// überdauert
 						stunde = abschnittwechsel[index];
 						minute = 0;
 					}
 					sb.append("geschlossen  ");
 					index++;
 				}
-				// für die Kontrolle, ob ein Abschnittwechsel stattfindet wichtig
+				// für die Kontrolle, ob ein Abschnittwechsel stattfindet
+				// wichtig
 				sum += value;
 				// Stunden und Minuten an den Terminplan anhängen
-				sb.append(df.format(stunde) + "." + df.format(minute % 60) + "  ");
+				sb.append(df.format(stunde) + "." + df.format(minute % 60)
+						+ "  ");
 				// neue Stunden/Minuten ausrechnen
 				minute += value;
 				stunde += Math.floor(minute / 60);
@@ -121,6 +138,7 @@ public class Terminplan {
 
 	/**
 	 * Gibt den Strategienamen zurück
+	 * 
 	 * @return Strategiename
 	 */
 	public String getName() {
@@ -129,6 +147,7 @@ public class Terminplan {
 
 	/**
 	 * Gibt die durchschnittliche Wartezeit zurück
+	 * 
 	 * @return durchschnittliche Wartezeit
 	 */
 	public double getWz() {
@@ -137,6 +156,7 @@ public class Terminplan {
 
 	/**
 	 * Gibt die durchschnittliche maximale Wartezeit zurück
+	 * 
 	 * @return durchschnittliche maximale Wartezeit
 	 */
 	public double getMwz() {
@@ -145,6 +165,7 @@ public class Terminplan {
 
 	/**
 	 * Gibt die durchschnittliche Leerlaufzeit des Arztes zurück
+	 * 
 	 * @return durchschnittliche Leerlaufzeit
 	 */
 	public double getLz() {
@@ -154,14 +175,16 @@ public class Terminplan {
 	/**
 	 * Gibt die Bewertung der Strategie zurück <br>
 	 * bs = wz + 0.1 * mwz + 5 * lz
+	 * 
 	 * @return Bewertung
 	 */
 	public double getBs() {
 		return bs;
 	}
-	
+
 	/**
 	 * Gibt die Anzahl der möglichen Variationen zurück
+	 * 
 	 * @return Anzahl der Variationen
 	 */
 	public int getMoeglichkeiten() {
